@@ -1,3 +1,12 @@
+"""
+Module de résolution du problème d'ordonnancement de tâches.
+
+Ce module permet de :
+- calculer les dates de début et de fin des tâches
+- déterminer un ordre valide d'exécution
+- résoudre automatiquement un projet complet
+"""
+
 from typing import Dict
 from model import Task
 
@@ -46,6 +55,16 @@ def get_task_order(all_tasks: Dict[str, Task]) -> list[str]:
 
 
 def solve_project(tasks: Dict[str, Task]) -> Dict[str, Task]:
+    
+    """
+    Résout un projet en calculant les dates de début et de fin de chaque tâche.
+
+    Paramètres :
+    tasks : dictionnaire de tâches
+
+    Retour :
+    dictionnaire de tâches avec dates calculées
+    """
     order = get_task_order(tasks)
 
     for name in order:
