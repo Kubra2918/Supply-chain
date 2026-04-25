@@ -42,3 +42,39 @@ def test_simple_case():
     assert tasks["A"].end == 10
     assert tasks["B"].start == 10
     assert tasks["B"].end == 15
+
+
+
+
+def test_parallel_tasks():
+    tasks = {
+        "A": Task("A", 5),
+        "B": Task("B", 3),
+    }
+
+    tasks = solve_project(tasks)
+
+    assert tasks["A"].start == 0
+    assert tasks["B"].start == 0
+
+
+def test_with_lag():
+    tasks = {
+        "A": Task("A", 5),
+        "B": Task("B", 3, [("A", "finish", 2)]),
+    }
+
+    tasks = solve_project(tasks)
+
+    assert tasks["B"].start == 7  # 5 + 2
+
+
+def test_start_dependency():
+    tasks = {
+        "A": Task("A", 10),
+        "B": Task("B", 5, [("A", "start", 3)]),
+    }
+
+    tasks = solve_project(tasks)
+
+    assert tasks["B"].start == 3
