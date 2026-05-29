@@ -1,140 +1,80 @@
-#  Projet Supply Chain – Planification de tâches
+🎬 Projet Supply Chain – Planification de tâches (Sujet 05)
 
-##  Objectif du projet
+Ce projet propose un moteur de calcul robuste pour résoudre des problèmes d'ordonnancement de tâches avec contraintes de dépendance (calcul de chemin critique, dates au plus tôt, durée totale).
 
-Ce projet a pour objectif de résoudre un problème d’ordonnancement de tâches avec contraintes de dépendance.
+Il est appliqué ici au cas concret du tournage d'un film (110 jours de durée totale).
 
-À partir d’un ensemble de tâches, nous cherchons à :
+✨ Fonctionnalités
 
-* déterminer les dates de début et de fin de chaque tâche
-* calculer la durée totale du projet
-* identifier le chemin critique
+Moteur mathématique : Modélisation réseau via NetworkX et validation des données via Pydantic.
 
----
+Interface CLI (Typer) : Application en ligne de commande claire et rapide.
 
-##  Cas étudié : tournage d’un film
+Interface GUI (Marimo) : Dashboard interactif avec curseurs de simulation et diagramme de Gantt en temps réel.
 
-Nous avons appliqué notre modèle à un exemple de planification du tournage d’un film.
+Qualité pro : Code typé (mypy), linté (ruff) et testé à 100% (pytest).
 
-Résultats obtenus :
+🚀 Démonstration et Utilisation
 
-* **Durée totale du projet : 110 jours**
-* **Chemin critique :**
+Nous recommandons d'utiliser uv pour garantir une installation ultra-rapide et portable.
 
-  A → C → D → F → G → H → I → K → L
+1. Installation
 
-Le chemin critique correspond à la suite de tâches qui détermine la durée minimale du projet.
+Clonez le dépôt, puis installez les dépendances :
 
----
+uv pip install -e .
 
-##  Fonctionnalités
 
-Le programme permet de :
+(Note : Si vous n'utilisez pas uv, la commande standard pip install -e . fonctionnera également).
 
-* modéliser des tâches avec des dépendances
-* calculer automatiquement les dates de début et de fin
-* déterminer un ordre valide d’exécution
-* afficher les résultats sous forme de tableau
-* visualiser le planning avec un diagramme de Gantt
-* utiliser une interface simple en ligne de commande
-* utiliser une interface interactive avec Marimo
+2. Interface en Ligne de Commande (CLI)
 
----
+L'interface est propulsée par Typer. Pour lancer le calcul du film directement dans votre terminal :
 
-##  Structure du projet
-
-```
-SUPPLY CHAIN/
-│
-├── src/
-│   ├── models.py        # Classes (Task, Dependency, Project)
-│   └── engine.py        # Moteur de calcul (ProjectEngine)
-│
-├── model.py             # Modélisation simple des tâches
-├── solver.py            # Algorithme de résolution du planning
-├── app.py               # Interface interactive Marimo
-├── main.py              # Interface en ligne de commande
-├── notebook_supply_chain.ipynb
-├── README.md
-│
-├── tests/
-│   ├── test_solver.py
-│   └── test_engine.py
-```
-
----
-
-##  Lancer le programme
-
-Dans le terminal, se placer dans le dossier du projet puis exécuter :
-
-```bash
 python main.py
-```
 
-Ensuite, choisir :
-
-```
-1
-```
-
-Le programme affiche :
-
-* le planning des tâches
-* la durée totale du projet
-* le chemin critique
-
-Un diagramme de Gantt s’ouvre également pour visualiser le planning.
-
----
-## Interface interactive (Marimo)
-
-Une interface interactive a été développée avec Marimo.
-
-Elle permet de :
-
-* modifier les durées des tâches avec des sliders
-* simuler l’impact sur le planning
-* afficher les résultats dynamiquement
-
-Lancer l’interface :
-
-```
-marimo edit app.py
-```
-
----
-
-##  Tests
-
-Des tests ont été réalisés avec **pytest** pour vérifier le bon fonctionnement du programme.
-
-Pour lancer les tests :
-
-```bash
-pytest
-```
 
 Résultat attendu :
 
-```
-5 passed
-```
+🎬 === RÉSULTAT DE LA SIMULATION DU FILM ===
 
----
+Durée totale du projet : 110.0 jours
 
-## 🧠 Approche
+Chemin critique : A ➜ C ➜ D ➜ F ➜ G ➜ H ➜ I ➜ K ➜ L
 
-Le projet a été réalisé en plusieurs étapes :
+3. Interface Graphique Interactive (GUI)
 
-1. Résolution manuelle du problème dans un notebook
-2. Généralisation du modèle à une famille de problèmes
-3. Implémentation d’une solution en Python (structure modulaire)
-4. Ajout d’une interface utilisateur (CLI + Marimo) et d’une visualisation graphique
+Pour ouvrir le tableau de bord interactif et visualiser le diagramme de Gantt :
 
----
+marimo edit app.py
 
-##  Auteur
 
-KURNAZ Kubra
-MOREAU Matteo
+📂 Architecture du Projet
+
+Le projet a été refactorisé pour suivre les standards modernes de Python :
+
+SUPPLY-CHAIN/
+├── src/
+│   ├── engine.py        # Moteur de calcul (NetworkX)
+│   └── models.py        # Modèles de données (Pydantic)
+│
+├── tests/
+│   └── test_engine.py   # Tests unitaires (100% coverage)
+│
+├── app.py               # Application interactive (Marimo)
+├── main.py              # CLI (Typer)
+├── pyproject.toml       # Enregistrement des dépendances (uv/pip)
+└── README.md
+
+
+🧪 Tests et Qualité
+
+Pour lancer la suite de tests et vérifier la couverture :
+
+python -m pytest --cov=src
+
+
+Pour vérifier le typage et le linting :
+
+python -m mypy src/
+python -m ruff check .
