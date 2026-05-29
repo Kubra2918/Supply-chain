@@ -1,4 +1,3 @@
-import pytest
 from src.models import Task, Dependency, Project
 from src.engine import ProjectEngine
 

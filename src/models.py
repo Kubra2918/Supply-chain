@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional, Literal
+from typing import List, Literal
 
 class Dependency(BaseModel):
     """Représente un lien entre deux tâches."""

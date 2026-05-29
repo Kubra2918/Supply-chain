@@ -1,89 +1,38 @@
-from model import Task
-from solver import solve_project
-import matplotlib.pyplot as plt
+import typer
+from src.models import Task, Dependency, Project
+from src.engine import ProjectEngine
 
+# On initialise l'application Typer
+app = typer.Typer(help="Application de gestion de planning de projet (Sujet 05)")
 
-def build_film_example():
-    return {
-        "A": Task("A", 30),
-        "B": Task("B", 12, [("A", "finish", 15)]),
-        "C": Task("C", 8, [("A", "finish", 20)]),
-        "D": Task("D", 4, [("A", "finish", 0), ("C", "finish", 0)]),
-        "E": Task("E", 7, [("C", "finish", 0), ("D", "finish", 0)]),
-        "F": Task("F", 10, [
-            ("A", "finish", 0),
-            ("B", "finish", 0),
-            ("C", "finish", 0),
-            ("D", "finish", 0)
-        ]),
-        "G": Task("G", 12, [
-            ("D", "finish", 0),
-            ("E", "finish", 0),
-            ("F", "finish", 0)
-        ]),
-        "H": Task("H", 3, [
-            ("F", "finish", 0),
-            ("G", "finish", 0)
-        ]),
-        "I": Task("I", 14, [("H", "finish", 0)]),
-        "J": Task("J", 7, [
-            ("I", "start", 3),
-            ("H", "finish", 0)
-        ]),
-        "K": Task("K", 6, [
-            ("I", "finish", 0),
-            ("J", "finish", 0)
-        ]),
-        "L": Task("L", 1, [("K", "finish", 2)]),
-    }
+@app.command()
+def film():
+    """
+    Calcule et affiche le planning du projet de tournage d'un film.
+    """
+    # 1. On charge les données du film avec la nouvelle architecture
+    tasks_data = [
+        Task(id="A", description="Scénario", duration=30),
+        Task(id="B", description="Casting", duration=12, dependencies=[Dependency(task_id="A", lag=15)]),
+        Task(id="C", description="Lieu", duration=8, dependencies=[Dependency(task_id="A", lag=20)]),
+        Task(id="D", description="Découpage", duration=4, dependencies=[Dependency(task_id="A"), Dependency(task_id="C")]),
+        Task(id="E", description="Décors", duration=7, dependencies=[Dependency(task_id="C"), Dependency(task_id="D")]),
+        Task(id="F", description="Extérieurs", duration=10, dependencies=[Dependency(task_id="A"), Dependency(task_id="B"), Dependency(task_id="C"), Dependency(task_id="D")]),
+        Task(id="G", description="Intérieurs", duration=12, dependencies=[Dependency(task_id="D"), Dependency(task_id="E"), Dependency(task_id="F")]),
+        Task(id="H", description="Synchro", duration=3, dependencies=[Dependency(task_id="F"), Dependency(task_id="G")]),
+        Task(id="I", description="Montage", duration=14, dependencies=[Dependency(task_id="H")]),
+        Task(id="J", description="Son", duration=7, dependencies=[Dependency(task_id="I", lag=3, type="SS"), Dependency(task_id="H")]),
+        Task(id="K", description="Mixage", duration=6, dependencies=[Dependency(task_id="I"), Dependency(task_id="J")]),
+        Task(id="L", description="Tirage", duration=1, dependencies=[Dependency(task_id="K", lag=2)]),
+    ]
 
+    project = Project(tasks=tasks_data)
+    engine = ProjectEngine(project)
 
-def display_table(tasks):
-    print("\nPlanning du projet :\n")
-    print(f"{'Tâche':<10}{'Début':<10}{'Fin':<10}")
-
-    for name, task in tasks.items():
-        print(f"{name:<10}{task.start:<10}{task.end:<10}")
-
-    print("\nDurée totale du projet :", tasks["L"].end, "jours")
-    print("Chemin critique : A -> C -> D -> F -> G -> H -> I -> K -> L")
-
-
-def plot_gantt(tasks):
-    fig, ax = plt.subplots()
-
-    y = 0
-    for name, task in tasks.items():
-        ax.barh(y, task.duration, left=task.start)
-        ax.text(task.start, y, name, va='center', ha='right')
-        y += 1
-
-    ax.set_xlabel("Temps (jours)")
-    ax.set_ylabel("Tâches")
-    ax.set_title("Diagramme de Gantt")
-
-    plt.show()
-
-
-def main():
-    print("=== PLANIFICATION DE PROJET ===")
-    print("1 - Résoudre l'exemple du film")
-    print("2 - Quitter")
-
-    choice = input("Choisissez une option : ")
-
-    if choice == "1":
-        tasks = build_film_example()
-        tasks = solve_project(tasks)
-
-        display_table(tasks)
-        plot_gantt(tasks)
-
-    elif choice == "2":
-        print("Fin du programme.")
-    else:
-        print("Option invalide.")
-
+    # 2. Affichage des résultats dans la console
+    print("\n🎬 === RÉSULTAT DE LA SIMULATION DU FILM ===")
+    print(f"Durée totale du projet : {engine.get_project_duration()} jours")
+    print(f"Chemin critique       : {' ➜ '.join(engine.get_critical_path())}\n")
 
 if __name__ == "__main__":
-    main()
+    app()
