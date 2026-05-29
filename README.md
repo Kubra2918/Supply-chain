@@ -11,7 +11,7 @@ Il est appliqué ici au cas concret du **tournage d'un film** (110 jours de dur�
 * **Moteur mathématique** : Modélisation réseau via `NetworkX` et validation des données via `Pydantic`.
 * **Interface CLI (Typer)** : Application en ligne de commande claire et rapide.
 * **Interface GUI (Marimo)** : Dashboard interactif avec curseurs de simulation et **diagramme de Gantt** en temps réel.
-* **Qualité pro** : Code typé (`mypy`), linté (`ruff`) et testé à 100% (`pytest`).
+* **Qualité** : Code typé (`mypy`), linté (`ruff`) et testé à 100% (`pytest`).
 
 ---
 
