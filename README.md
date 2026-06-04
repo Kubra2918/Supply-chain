@@ -72,18 +72,19 @@ SUPPLY-CHAIN/
 
 ## 🧪 Tests et Qualité
 
-Pour lancer la suite de tests et vérifier la couverture :
+Pour lancer la suite de tests ou vérifier le code, vous devez d'abord installer les dépendances de développement :
 
 ~~~bash
-python -m pytest --cov=src
+uv pip install -e ".[dev]"
+~~~
+
+Ensuite, pour lancer les tests et vérifier la couverture à 100% :
+~~~bash
+uv run pytest
 ~~~
 
 Pour vérifier le typage et le linting :
-
 ~~~bash
-python -m mypy src/
-python -m ruff check .
+uv run mypy src/
+uv run ruff check .
 ~~~
-
----
-**Auteurs :** KURNAZ Kubra & MOREAU Matteo
