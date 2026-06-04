@@ -97,7 +97,7 @@ def _(engine, mo, simulation_tasks):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(engine, mo):
     import plotly.express as px
     import pandas as pd
@@ -120,7 +120,7 @@ def _(engine, mo):
             # On tag les tâches critiques pour les mettre en rouge
             "Statut": "Critique" if t_id in critical_path else "Normale"
         })
-    
+
     df = pd.DataFrame(df_data)
 
     # 3. On crée le graphique
